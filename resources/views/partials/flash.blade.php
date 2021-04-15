@@ -1,0 +1,13 @@
+@if (session('message'))
+    <div class="alert alert-{{ session('type') }} alert-dismissible {{ config('app.locale') == 'ar' ? 'text-right' : '' }}"
+        role="alert"
+        id="session-alert">
+        {{ session('message') }}
+        <button type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif

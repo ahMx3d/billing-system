@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +14,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('languages/{locale}', [
+    'as'   => 'locale.change',
+    'uses' => 'SetLocaleController'
+]);
+
+
+Route::group([
+    'prefix' => 'bills/{bill}',
+    'as'     => 'bills.'
+], function () {
+    Route::get('send', [
+        'as'   => 'send',
+        'uses' => 'BillController@send',
+    ]);
+    Route::get('export/{type}', [
+        'as'   => 'export',
+        'uses' => 'BillController@export',
+    ]);
+    Route::get('print', [
+        'as'   => 'print',
+        'uses' => 'BillController@print',
+    ]);
 });
 
-Auth::routes();
+Route::get('/index', 'BillController@index');
+Route::get('/', 'BillController@index');
+Route::resource('bills', 'BillController');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Auth::routes();
